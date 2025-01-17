@@ -84,6 +84,16 @@ This repository demonstrates how to use [Firebase Genkit](https://firebase.googl
     * **2.** Enter the keywords "Dell Laptop".
     * **3.** Click the search button.
 
+![Screenshot 2025-01-16 at 12 54 57 p m](https://github.com/user-attachments/assets/cfc702b1-0ef1-4047-b708-8e75b88ba6ce)
+
+![Screenshot 2025-01-16 at 1 35 46 p m](https://github.com/user-attachments/assets/6bbfd28e-332c-43b2-9499-3621fea209ae)
+
+![Screenshot 2025-01-16 at 1 50 57 p m](https://github.com/user-attachments/assets/c67b3f2f-10e3-4b16-af45-84a4c356ab04)
+
+![Screenshot 2025-01-16 at 1 51 08 p m](https://github.com/user-attachments/assets/1196ec37-258c-4d92-b2de-d7648727383c)
+
+![Screenshot 2025-01-16 at 1 51 18 p m](https://github.com/user-attachments/assets/74dda9a5-2485-4b6d-9253-4d7829df93e0)
+
 
 This repository is actively maintained and updated with new examples and use cases. Contributions are welcome!
 
