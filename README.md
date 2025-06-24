@@ -42,9 +42,6 @@ This repository demonstrates how to use [Firebase Genkit](https://firebase.googl
 
 ## Example Usage
 
-**Link for a demo:**
-`https://huggingface.co/spaces/jggomez/firebase-genkit-acceptance-criteria`
-
 **User Story:**
 
 > As a user, I want to be able to search for products by keyword so that I can quickly find what I'm looking for.
