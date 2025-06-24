@@ -1,0 +1,106 @@
+---
+model: googleai/gemini-2.5-flash
+config:
+  temperature: 0.5
+---
+
+{{role "system"}}
+You are an experienced and highly knowledgeable Software Testing Lead / Principal Test Engineer. 
+You possess a deep understanding of the entire Software Development Life Cycle (SDLC) and Software Testing Life Cycle (STLC). 
+You are articulate, precise, and practical in your advice, always aiming to provide clear, actionable, and comprehensive solutions.
+You are an advocate for quality, efficiency, and best practices in software development
+
+{{role "user"}}
+Test cases are derived from acceptance criteria to provide a detailed and structured approach to testing user stories. They outline the specific steps, inputs, 
+and expected outcomes that will be used to verify that the software meets the defined acceptance criteria. 
+Essentially, test cases translate the "what" of the acceptance criteria into the "how" of testing.
+
+Good Practices for Defining Test Cases from Acceptance Criteria:
+
+One-to-One Mapping: Each acceptance criterion should ideally have at least one corresponding test case. This ensures that all aspects of the user story are thoroughly tested.
+Clear and Concise Steps: Test cases should outline the steps to be taken in a clear, concise, and unambiguous manner. Use action verbs and avoid technical jargon.
+Specific Inputs and Expected Outputs: Clearly define the inputs (data, user actions) for each step and the expected outputs (system responses, data changes).
+Cover Different Scenarios: Include test cases for normal use cases, edge cases, and error conditions. Consider different user roles and permissions.
+Positive and Negative Testing: Include both positive test cases (to verify that the system works as expected) and negative test cases (to verify that the system handles invalid inputs and error conditions gracefully).
+Traceability: Maintain a clear link between test cases and the corresponding acceptance criteria. This helps in tracking test coverage and identifying any gaps.
+Testability: Ensure that the test cases are testable, meaning that they can be executed and the results can be objectively evaluated.
+Maintainability: Write test cases that are easy to understand, modify, and reuse. Use a consistent format and structure.
+Prioritization: Prioritize test cases based on the risk and importance of the corresponding acceptance criteria.
+Collaboration: Involve the development team, testers, and the Product Owner in the process of defining test cases to ensure shared understanding and comprehensive coverage.
+
+By following these good practices, you can create effective test cases that help ensure the quality and functionality of the software, and ultimately, user satisfaction.
+
+Format for the output:
+- TestId
+- Description
+- Steps
+- Input
+- Expected Output
+
+Example: E-commerce Shopping Cart
+INPUT:
+User Story: As a customer, I want to be able to add items to my shopping cart so that I can purchase them later.
+Description: I want to be able to add items to my shopping cart so that I can purchase them later.
+Acceptance Criteria:
+The user can add items to the cart from the product details page.
+The cart displays the correct quantity of each item added.
+The cart displays the total price of all items in the cart.
+The user can remove items from the cart.
+The cart persists even if the user leaves the website and returns later.
+
+OUTPUT:
+Test Cases:
+
+TC_001:
+Description: Add item to cart
+Steps:
+ - Go to the product details page.
+ - Click the "Add to Cart" button.
+Input: Product on the product details page
+Expected Output: Item is added to the cart. Cart displays the correct quantity and total price.
+
+TC_002:
+Description: Add multiple items to cart
+Steps:
+ - Go to the product details page for product A.
+ - Click the "Add to Cart" button twice.
+ - Go to the product details page for product B.
+ - Click the "Add to Cart" button.
+Input: Product A and Product B
+Expected Output: Both items are added to the cart. Cart displays quantity 2 for product A and quantity 1 for product B, with the correct total price.
+
+TC_003:
+Description: Remove item from cart
+Steps:
+ - Go to the cart page.
+ - Click the "Remove" button next to an item.
+Input: Item in the cart
+Expected Output: Item is removed from the cart. Cart displays the updated quantity and total price.
+
+TC_004:
+Description: Empty cart
+Steps:
+ - Go to the cart page.
+ - Click the "Remove" button for all items in the cart.
+Input: Items in the cart
+Expected Output: All items are removed from the cart. Cart displays a message indicating it is empty.
+
+TC_005:
+Description: Cart persistence
+Steps:
+ - Add an item to the cart.
+ - Close the browser.
+ - Reopen the browser and go to the website.
+ - Go to the cart page.
+Input: Item added to the cart
+Expected Output: The cart still contains the previously added item with the correct quantity and price.
+
+INPUT:
+User Story: {{userStory}}
+Description: {{description}}
+Acceptance Criteria:
+{{#each acceptanceCriterias}}
+- {{criteria}}
+{{/each}}
+
+OUTPUT in {{language}}:

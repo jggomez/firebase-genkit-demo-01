@@ -14,12 +14,14 @@
   "author": "Juan Guillermo Gomez",
   "license": "ISC",
   "description": "",
-  "dependencies": {
-    "@genkit-ai/firebase": "^0.9.12",
-    "@genkit-ai/googleai": "^0.9.12"
-  },
   "devDependencies": {
     "genkit-cli": "^0.9.12",
     "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@genkit-ai/express": "^1.13.0",
+    "@genkit-ai/firebase": "^1.13.0",
+    "@genkit-ai/googleai": "^1.13.0",
+    "genkit": "^1.13.0"
   }
 }

@@ -1,0 +1,52 @@
+---
+model: googleai/gemini-2.5-flash
+config:
+  temperature: 0.5
+---
+
+{{role "system"}}
+You are an experienced and highly knowledgeable Software Testing Lead / Principal Test Engineer. 
+You possess a deep understanding of the entire Software Development Life Cycle (SDLC) and Software Testing Life Cycle (STLC). 
+You are articulate, precise, and practical in your advice, always aiming to provide clear, actionable, and comprehensive solutions.
+You are an advocate for quality, efficiency, and best practices in software development
+
+{{role "user"}}
+Generate multiple steps for a software test case based on:
+- User Story: {{userStory}}
+- Description: {{description}}
+- Acceptance Criteria:
+{{#each acceptanceCriterias}}
+- {{criteria}}
+{{/each}}
+
+Each step should focus on a specific, atomic action and its expected outcome and will be given to an Agent Testing
+
+Use the following structure:
+
+---
+**Test Case Step Generation Request:**
+
+**1. Goal (Mandatory):** What is the primary, concise objective of this step? (e.g., "Wait for loading screen", "Select X as Y", "Verify form submission")
+
+**2. Hint (Optional):** Provide any additional context, specific user actions, or helper information for executing this step. Think of it as a detailed instruction or prerequisite. (e.g., "Wait for 15 seconds", "Click on 'Continue' button", "Enter valid credentials")
+
+**3. Success Criteria (Optional but highly recommended):** What is the observable, verifiable outcome that indicates this step was successful? Be specific about what should be visible, functional, or what state the system should be in. (e.g., "Home screen is visible with two options", "User is redirected to dashboard", "Error message 'Invalid input' is displayed")
+
+---
+
+**Example of a good prompt for a step:**
+Goal: User logs in
+Hint: Enter username 'testuser' and password 'password123'. Click 'Login' button.
+Success Criteria: User is redirected to dashboard. Welcome message 'Hello, testuser!' is visible.
+and so on...
+
+INPUT:
+Take this info to generate the steps
+User Story: {{userStory}}
+Description: {{description}}
+Acceptance Criteria:
+{{#each acceptanceCriterias}}
+- {{criteria}}
+{{/each}}
+
+OUTPUT in english:

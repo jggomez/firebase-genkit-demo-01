@@ -1,0 +1,99 @@
+---
+model: googleai/gemini-2.5-flash
+config:
+  temperature: 0.5
+---
+
+{{role "system"}}
+You are a professional with a deep theoretical and practical understanding of 
+Agile methodologies and frameworks, with a particular emphasis on Scrum. 
+Your experience allows you to design, implement, and optimize Agile processes in 
+diverse contexts, adapting them to the specific needs of each organization.
+
+{{role "user"}}
+Acceptance criteria for a user story are essential to ensure that the development team fully understands the requirements and delivers a product that meets user needs. To be effective, they must meet the following characteristics:
+Clarity and Accuracy:
+
+Concise and direct language: Avoid ambiguity and use terms that all stakeholders understand.
+Focus on observable behavior: Describe what the system should do, not how it should do it.
+
+Concrete examples: Provide specific examples of how the user will interact with the functionality.
+
+Completeness:
+
+Cover all relevant scenarios: Include normal use cases, edge cases, and error conditions.
+
+Consider different perspectives: Take into account the needs of all users involved.
+
+Verifiability:
+Define measurable and verifiable conditions: Establish criteria that can be objectively tested.
+Use acceptance tests: Define specific tests that demonstrate that the user story meets the criteria.
+
+Relevance:
+Align the criteria with business value: Ensure that the criteria contribute to the project objectives.
+Prioritize the most important criteria: Identify the criteria that are essential for user satisfaction.
+
+Format:
+Use a consistent format: This can be a list, a table, or any other format that facilitates reading and understanding.
+Keep the criteria up to date: Review and update the criteria as the project progresses.
+
+Remember that acceptance criteria are a communication tool between the development team and the user. They should be clear, concise, and easy for everyone involved to understand.
+
+Example 1: E-commerce website
+INPUT
+User Story: As a customer, I want to be able to filter products by price range so that I can easily find products within my budget.
+
+OUTPUT
+Acceptance Criteria:
+- The user can specify a minimum and maximum price.
+- The results page displays only products within the specified price range.
+- The price filter can be combined with other filters (e.g., category, brand).
+- The filter should work correctly with different currencies.
+- If no products match the filter, a message is displayed informing the user.
+
+Example 2: Mobile Banking App
+INPUT
+User Story: As a bank customer, I want to be able to view my account balance on the app's home screen so that I can quickly check my finances.
+Description: I want to be able to view my account balance on the app's home screen so that I can quickly check my finances.
+
+OUTPUT
+Acceptance Criteria:
+- The account balance is displayed prominently on the home screen after logging in.
+- The balance is updated in real-time.
+- The balance can be displayed in different currencies.
+- The user can choose to hide the balance for privacy.
+- If there is an error retrieving the balance, an error message is displayed.
+
+Example 3: Project Management Tool
+INPUT
+User Story: As a project manager, I want to be able to assign tasks to team members so that I can track progress and ensure everyone knows their responsibilities.
+Description: I want to be able to assign tasks to team members so that I can track progress and ensure everyone knows their responsibilities.
+
+OUTPUT
+Acceptance Criteria:
+
+- The project manager can select a task and assign it to one or more team members.
+- The assigned team member is notified of the new task.
+- The task is displayed in the assignee's task list.
+- The project manager can reassign tasks.
+- The system prevents assigning a task to someone who is already over capacity.
+
+Example 4: Social Media Platform
+INPUT
+User Story: As a user, I want to be able to block other users so that I can control who can interact with me.
+Description: I want to be able to block other users so that I can control who can interact with me.
+
+OUTPUT
+Acceptance Criteria:
+- The user can block another user from their profile page.
+- Blocked users cannot view the user's profile or posts.
+- Blocked users cannot send messages or friend requests to the user.
+- The user can unblock another user.
+- The system confirms with the user before blocking someone.
+
+
+INPUT
+User Story: {{userStory}}
+Description: {{description}}
+
+OUTPUT in {{language}}:

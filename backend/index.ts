@@ -1,22 +1,18 @@
-import { gemini15Flash, googleAI } from "@genkit-ai/googleai";
+import { googleAI } from "@genkit-ai/googleai";
 import { genkit, z } from "genkit";
-import {
-  SYSTEM,
-  PROMPT_ACCEPTANCE_CRITERIA,
-  PROMPT_TEST_CASES,
-} from "./prompts";
+import { startFlowServer } from "@genkit-ai/express";
 import { enableFirebaseTelemetry } from "@genkit-ai/firebase";
 
 enableFirebaseTelemetry();
 
 const ai = genkit({
   plugins: [googleAI()],
-  model: gemini15Flash,
 });
 
 const InputUserStories = z.object({
   userStory: z.string(),
   description: z.string(),
+  language: z.string(),
 });
 
 const OutputAcceptanceCriterias = z.array(z.string());
@@ -25,16 +21,77 @@ const OutputTestCases = z.array(
   z.object({
     testId: z.string(),
     description: z.string(),
-    steps: z.string(),
     input: z.string(),
     expectedOutput: z.string(),
+    steps: z.array(
+      z.object({
+        description: z.string(),
+      })
+    ),
+  })
+);
+
+const OutputTestCasesAgentTesting = z.array(
+  z.object({
+    goal: z.string(),
+    hint: z.string(),
+    successCriteria: z.string(),
   })
 );
 
 const OutputComponentsProcess = z.object({
   acceptanceCriterias: OutputAcceptanceCriterias.nullable(),
   testCases: OutputTestCases.nullable(),
+  testCasesAgentTesting: OutputTestCasesAgentTesting.nullable(),
 });
+
+async function generateTestCases(
+  userStory: string,
+  description: string,
+  acceptanceCriterias: string[],
+  language: string
+) {
+  const testCasesPrompt = await ai.prompt("test_cases");
+
+  const outputTesCases = await testCasesPrompt(
+    {
+      userStory,
+      description,
+      acceptanceCriterias,
+      language,
+    },
+    {
+      output: {
+        schema: OutputTestCases,
+      },
+    }
+  );
+
+  return outputTesCases?.output;
+}
+
+async function generateTestCasesAgentTesting(
+  userStory: string,
+  description: string,
+  acceptanceCriterias: string[]
+) {
+  const testCasesAgentTestingPrompt = await ai.prompt("test_cases_firebase");
+
+  const outputTesCasesAgentTesting = await testCasesAgentTestingPrompt(
+    {
+      userStory,
+      description,
+      acceptanceCriterias,
+    },
+    {
+      output: {
+        schema: OutputTestCasesAgentTesting,
+      },
+    }
+  );
+
+  return outputTesCasesAgentTesting?.output;
+}
 
 const generateActivitiesSoftware = ai.defineFlow(
   {
@@ -43,54 +100,72 @@ const generateActivitiesSoftware = ai.defineFlow(
     outputSchema: OutputComponentsProcess,
   },
   async (input: z.infer<typeof InputUserStories>) => {
-    const { userStory, description } = input;
+    const { userStory, description, language } = input;
 
     let acceptanceCriterias: string[] | null = [];
     let testCases:
       | {
           testId: string;
           description: string;
-          steps: string;
+          steps: Array<{ description: string }>;
           input: string;
           expectedOutput: string;
         }[]
       | null = [];
 
-    const { output } = await ai.generate({
-      system: SYSTEM,
-      prompt: PROMPT_ACCEPTANCE_CRITERIA(userStory, description),
-      config: {
-        temperature: 0.5,
+    let testCasesAgentTesting:
+      | {
+          goal: string;
+          hint: string;
+          successCriteria: string;
+        }[]
+      | null = [];
+
+    const acceptanceCriteriaPrompt = await ai.prompt("acceptance_criteria");
+
+    const { output } = await acceptanceCriteriaPrompt(
+      {
+        userStory,
+        description,
+        language,
       },
-      output: {
-        schema: OutputAcceptanceCriterias,
-      },
-    });
+      {
+        output: {
+          schema: OutputAcceptanceCriterias,
+        },
+      }
+    );
     acceptanceCriterias = output;
 
     if (acceptanceCriterias) {
-      const outputTesCases = await ai.generate({
-        system: SYSTEM,
-        prompt: PROMPT_TEST_CASES(userStory, acceptanceCriterias, description),
-        config: {
-          temperature: 0.5,
-        },
-        output: {
-          schema: OutputTestCases,
-        },
-      });
+      const [generatedTestCases, generatedTestCasesAgentTesting] =
+        await Promise.all([
+          generateTestCases(
+            userStory,
+            description,
+            acceptanceCriterias,
+            language
+          ),
+          generateTestCasesAgentTesting(
+            userStory,
+            description,
+            acceptanceCriterias
+          ),
+        ]);
 
-      testCases = outputTesCases?.output;
+      testCases = generatedTestCases;
+      testCasesAgentTesting = generatedTestCasesAgentTesting;
     }
 
     return {
       acceptanceCriterias,
       testCases,
+      testCasesAgentTesting,
     };
   }
 );
 
-ai.startFlowServer({
+startFlowServer({
   flows: [generateActivitiesSoftware],
   cors: {
     origin: "*",
