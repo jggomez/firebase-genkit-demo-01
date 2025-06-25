@@ -31,7 +31,7 @@ def create_text_test_cases_agent_testing(test_cases):
 
 
 def get_generate_activities_software(user_story, detail_description, language):
-    url = "https://process-creator-software-823002731253.us-central1.run.app/generateActivitiesSoftware"
+    url = "https://fake-url.com/generateActivitiesSoftware"
     request_body = {
         "data": {
             "userStory": user_story,
